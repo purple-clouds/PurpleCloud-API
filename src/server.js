@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var port = 1337;
+var port = process.env.port || 1337;
 
 app.get('/', function(request, response){
     response.status(200).json({serverup:true});
