@@ -1,11 +1,24 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 1337;
+var siteUrl = "https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines";
+var axios = require("axios");
+var cheerio = require("cheerio");
 
-app.get('/', function(request, response){
+app.get('/', (request, response) => {
     response.status(200).json({serverup:true});
 });
+
+const fetchData = async () => {
+    const result = await axios.get(siteUrl);
+    return cheerio.load(result.data);
+  };
+
+app.get('/countries', async (request, response) => {
+    const $ = await fetchData();   
+    response.send($.html());
+});
   
-app.listen(port, function() {
+app.listen(port, () => {
     console.log('App listening at http://localhost:' + port)
 });
