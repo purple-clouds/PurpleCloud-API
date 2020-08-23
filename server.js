@@ -23,7 +23,7 @@ app.get('/countries', async (request, response) => {
             return false;
         }
         else {
-            headerArray.push($(this).text().replace("\n",""));
+            headerArray.push($(this).text().replace(/\n/g, ""));
         }
     });
     response.status(200).json(headerArray);
