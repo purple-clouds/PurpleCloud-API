@@ -15,7 +15,7 @@ const fetchData = async () => {
   };
 
 app.get('/countries', async (request, response) => {
-    const $ = await fetchData();   
+    const $ = await fetchData();
     var headerArray = [];
     $('table > tbody  > tr > th').each(function(index, th) {
         if(index == 0 || index == 1) { }
@@ -24,6 +24,18 @@ app.get('/countries', async (request, response) => {
         }
         else {
             headerArray.push($(this).text().replace(/\n/g, ""));
+        }
+    });
+    response.status(200).json(headerArray);
+});
+
+app.get('/country', async (request, response) => {
+    const $ = await fetchData();
+    var headerArray = [];
+    $('table > tbody  > tr > th').each(function(index, th) {
+        if(index == 0 || index == 1) { }
+        else if($(this).text().toLowerCase().includes(request.query.name.toLowerCase())) {
+            headerArray.push($(this).text().replace(/\n/g, ""));   
         }
     });
     response.status(200).json(headerArray);
