@@ -31,16 +31,17 @@ app.get('/countries', async (request, response) => {
 
 app.get('/country', async (request, response) => {
     const $ = await fetchData();
-    var headerArray = [];
+    var obj = {};
     $('table > tbody  > tr > th').each(function(index, th) {
         if(index == 0 || index == 1) { }
         else if($(this).text().toLowerCase().includes(request.query.name.toLowerCase())) {
-            headerArray.push($(this).next().text().replace(/\n/g, "").replace(/\s/g, "").match(/\d+/g));            
-            headerArray.push($(this).next().text().replace(/\n/g, ""));   
-            headerArray.push($(this).next().html().replace(/\n/g, ""));
+            obj["Phone numbers"] = $(this).next().text().replace(/\n/g, "").replace(/\s/g, "").match(/\d+/g); 
+            obj["Websites"] = $(this).next().html().replace(/\n/g, "").match(/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig);
+            obj["Text element"] = $(this).next().text().replace(/\n/g, "");
+            obj["HTML element"] = $(this).next().html().replace(/\n/g, "");
         }
     });
-    response.status(200).json(headerArray);
+    response.status(200).json(obj);
 });
   
 app.listen(port, () => {
